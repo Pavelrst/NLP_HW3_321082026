@@ -221,7 +221,57 @@ def replace_word(word):
         Replaces rare words with categories (numbers, dates, etc...)
     """
     ### YOUR CODE HERE
-    raise NotImplementedError
+    pattern = re.compile('^\d{2}$')
+    if pattern.match(word):
+        return 'twoDigitNum'
+
+    pattern = re.compile('^\d{4}$')
+    if pattern.match(word):
+        return 'fourDigitNum'
+
+    pattern = re.compile('^[A-Z]+[0-9]+[0-9\-]+[0-9]+$')
+    if pattern.match(word):
+        return 'containsDigitAndAlpha'
+
+    pattern = re.compile('^[0-9]+[0-9\-]+[0-9]+$')
+    if pattern.match(word):
+        return 'containsDigitAndDash'
+
+    pattern = re.compile('^[0-9]+[0-9/]+[0-9]+$')
+    if pattern.match(word):
+        return 'containsDigitAndSlash'
+
+    pattern = re.compile('^(?:\d+,)+\d+\.?\d+$')
+    if pattern.match(word):
+        return 'containsDigitAndComma'
+
+    pattern = re.compile('^[0-9]+[0-9.]+[0-9]+$')
+    if pattern.match(word):
+        return 'containsDigitAndPeriod'
+
+    pattern = re.compile('^\d+\.?\d+$')
+    if pattern.match(word):
+        return 'otherNum'
+
+    pattern = re.compile('^[A-Z]+$')
+    if pattern.match(word):
+        return 'allCaps'
+
+    pattern = re.compile('^[A-Z]\.$')
+    if pattern.match(word):
+        return 'capPeriod'
+
+    pattern = re.compile('^[A-Z].*$')
+    if pattern.match(word):
+        return 'initCap'
+
+    pattern = re.compile('^[a-z]+$')
+    if pattern.match(word):
+        return 'lowerCase'
+
+    pattern = re.compile('[\\.\\!\\?\\;\\,]')
+    if pattern.match(word):
+        return 'other'
     ### END YOUR CODE
     return "UNK"
 
