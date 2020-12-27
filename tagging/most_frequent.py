@@ -9,7 +9,28 @@ def most_frequent_train(train_data):
     The dictionary should have a default value.
     """
     ### YOUR CODE HERE
-    raise NotImplementedError
+    all_possible_tags = []
+    tag_count_dict = {}
+    for sentence in train_data:
+        for word, _ in sentence:
+            tag_count_dict[word] = []
+
+    for sentence in train_data:
+        for word, tag in sentence:
+            if not tag in all_possible_tags:
+                all_possible_tags.append(tag)
+            tag_count_dict[word].append(tag)
+
+    print(all_possible_tags)
+
+    def most_frequent(List):
+        return max(set(List), key=List.count)
+
+    for key in tag_count_dict.keys():
+        most_common_tag = most_frequent(tag_count_dict[key])
+        tag_count_dict[key] = most_common_tag
+
+    return tag_count_dict
     ### END YOUR CODE
 
 def most_frequent_eval(test_set, pred_tags):
@@ -24,7 +45,10 @@ def most_frequent_eval(test_set, pred_tags):
         gold_tag_seqs.append(true_tags)
 
         ### YOUR CODE HERE
-        raise NotImplementedError
+        temp_list = []
+        for word in words:
+            temp_list.append(pred_tags[word])
+        pred_tag_seqs.append(tuple(temp_list))
         ### END YOUR CODE
 
     return evaluate_ner(gold_tag_seqs, pred_tag_seqs)
