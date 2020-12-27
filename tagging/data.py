@@ -2,7 +2,7 @@ import re
 from numpy import array
 from collections import defaultdict, Counter
 
-from categories_sol import * # DO NOT USE IF YOU WANT TO LEARN SOMETHING
+#from categories_sol import * # DO NOT USE IF YOU WANT TO LEARN SOMETHING
 
 MIN_FREQ = 3
 def invert_dict(d):
