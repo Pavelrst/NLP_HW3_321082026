@@ -4,6 +4,134 @@ from data import *
 from collections import defaultdict, Counter
 import math
 
+
+class Probabilities():
+    def __init__(self, e_tag_counts,
+                 e_word_tag_counts,
+                 q_tri_counts,
+                 q_bi_counts,
+                 q_uni_counts,
+                 total_tokens,
+                 lambda1=0.6,
+                 lambda2=0.3,
+                 lambda3=0.1):
+        self.e_tag_counts = e_tag_counts
+        self.e_word_tag_counts = e_word_tag_counts
+        self.q_tri_counts = q_tri_counts
+        self.q_bi_counts = q_bi_counts
+        self.q_uni_counts = q_uni_counts
+        self.total_tokens = total_tokens
+        self.lambda1 = lambda1
+        self.lambda2 = lambda2
+        self.lambda3 = lambda3
+
+    def e_proba(self, word, tag):
+        if (word, tag) in e_word_tag_counts.keys():
+            return e_word_tag_counts[(word, tag)] / float(e_tag_counts[tag])
+        else:
+            return 0
+
+    def q_proba(self, tag1, tag2, tag3):
+        proba = self.unigram_prob(tag1)
+        proba += self.bigram_prob(tag1, tag2)
+        proba += self.trigram_prob(tag1, tag2, tag3)
+        return proba
+
+    def trigram_prob(self, tag1, tag2, tag3):
+        assert 0 <= self.lambda3 < 1
+        if (tag1, tag2, tag3) in q_tri_counts.keys():
+            return self.lambda3 * q_tri_counts[(tag1, tag2, tag3)] / q_bi_counts[(tag1, tag2)]
+        else:
+            return 0
+
+    def bigram_prob(self, tag1, tag2):
+        assert 0 <= self.lambda2 < 1
+        if (tag1, tag2) in q_bi_counts.keys():
+            return self.lambda2 * q_bi_counts[(tag1, tag2)] / q_uni_counts[tag1]
+        else:
+            return 0
+
+    def unigram_prob(self, tag1):
+        assert 0 <= self.lambda1 < 1
+        if tag1 in q_uni_counts.keys():
+            return self.lambda1 * q_uni_counts[tag1] / total_tokens
+        else:
+            return 0
+
+class Layer():
+    def __init__(self):
+        self.layer_dict = defaultdict(lambda: -math.inf)
+        self.back_pointers = {}
+
+    def set_proba(self, tag1, tag2, log_proba):
+        self.layer_dict[(tag1, tag2)] = log_proba
+
+    def get_proba(self, tag1, tag2):
+        return self.layer_dict[(tag1, tag2)]
+
+    def set_back_pointer(self, tag1, tag2, back_tag):
+        self.back_pointers[(tag1, tag2)] = back_tag
+
+    def get_back_pointers(self):
+        return self.back_pointers
+
+    def drop_lows(self):
+        for key in self.layer_dict.keys():
+            if self.layer_dict[key] < -math.inf:
+                del self.layer_dict[key]
+
+
+
+class ViterbiGraph():
+    def __init__(self, proba_fn):
+        self.proba_fn = proba_fn
+        self.all_tags = e_tag_counts.keys()
+        self.e_tag_counts = e_tag_counts
+        self.total_back_pointers_list = []
+
+    def compare_fn(self, input_tuple):
+        log_proba = input_tuple[1]
+        tags_tuple = input_tuple[0]
+        tag1 = tags_tuple[0]
+        tag2 = tags_tuple[1]
+        return log_proba + math.log(self.proba_fn.q_proba(tag1, tag2, 'STOP'))
+
+    def predict(self, sent):
+        layer = Layer()
+        layer.set_proba('START', 'START', 0)
+
+        for word in sent:
+            new_layer = Layer()
+            for v in self.all_tags:
+                if not self.proba_fn.e_proba(word=word, tag=v) == 0:
+                    for (w, u), prev_log_prob in layer.layer_dict.items():
+                        e_proba = self.proba_fn.e_proba(word=word, tag=v)
+                        q_proba = self.proba_fn.q_proba(tag1=w, tag2=u, tag3=v)
+                        log_prob = prev_log_prob + \
+                                   math.log(q_proba) + \
+                                   math.log(e_proba)
+
+                        if log_prob > new_layer.get_proba(u, v):
+                            new_layer.set_proba(u, v, log_prob)
+                            new_layer.set_back_pointer(u, v, w)
+
+            self.total_back_pointers_list.append(new_layer.get_back_pointers())
+            new_layer.drop_lows()
+            layer = new_layer
+
+        final_pair = max(layer.layer_dict.items(), key=self.compare_fn)[0]
+        predicted_tags = list(final_pair)
+
+        # back track from the end, excluding first two 'start' tags
+        reverse_pointers = self.total_back_pointers_list[::-1]
+        reverse_pointers = reverse_pointers[:-2]  #remove 'start' tags
+        for current_back_pointers in reverse_pointers:
+            w = current_back_pointers[tuple(predicted_tags[:2])]
+            predicted_tags.insert(0, w)
+        if predicted_tags[0] == 'START':
+            predicted_tags = predicted_tags[1:]
+        return predicted_tags
+
 def hmm_train(sents):
     """
         sents: list of tagged sentences
@@ -69,51 +197,6 @@ def hmm_train(sents):
     ### END YOUR CODE
     return total_tokens, q_tri_counts, q_bi_counts, q_uni_counts, e_word_tag_counts, e_tag_counts
 
-def e(word, tag, e_tag_counts, e_word_tag_counts):
-    if (word, tag) in e_word_tag_counts.keys():
-        return e_word_tag_counts[(word, tag)] / float(e_tag_counts[tag])
-    else:
-        return 0
-
-def q_proba(tag1, tag2, tag3, q_tri_counts, q_bi_counts, q_uni_counts, total_tokens, lambda1, lambda2, lambda3):
-    proba = unigram_prob(tag1, q_uni_counts, total_tokens, lambda1)
-    proba += bigram_prob(tag1, tag2, q_bi_counts, q_uni_counts, lambda2)
-    proba += trigram_prob(tag1, tag2, tag3, q_tri_counts, q_bi_counts, lambda3)
-    return proba
-
-def trigram_prob(tag1, tag2, tag3, q_tri_counts, q_bi_counts, factor):
-    assert 0 <= factor < 1
-    if (tag1, tag2, tag3) in q_tri_counts.keys():
-        return factor * q_tri_counts[(tag1, tag2, tag3)]/q_bi_counts[(tag1, tag2)]
-    else:
-        return 0
-
-def bigram_prob(tag1, tag2, q_bi_counts, q_uni_counts, factor):
-    assert 0 <= factor < 1
-    if (tag1, tag2) in q_bi_counts.keys():
-        return factor * q_bi_counts[(tag1, tag2)]/q_uni_counts[tag1]
-    else:
-        return 0
-
-def unigram_prob(tag1, q_uni_counts, total_tokens, factor):
-    assert 0 <= factor < 1
-    if tag1 in q_uni_counts.keys():
-        return factor * q_uni_counts[tag1]/total_tokens
-    else:
-        return 0
-
-# class Layer():
-#     def __init__(self):
-#         self.layer_dict = defaultdict(lambda: -math.inf)
-#
-#     def set_proba(self, tag1, tag2, log_proba):
-#         self.layer_dict[(tag1, tag2)] = log_proba
-#
-#     def get_proba(self, tag1, tag2):
-#         return self.layer_dict[(tag1, tag2)]
-#
-# class ViterbiGraph():
-#     def __init__(self, lambda1, lambda2, lambda3):
 
 def hmm_viterbi(sent, total_tokens, q_tri_counts, q_bi_counts, q_uni_counts,
                 e_word_tag_counts, e_tag_counts, lambda1, lambda2):
@@ -124,39 +207,17 @@ def hmm_viterbi(sent, total_tokens, q_tri_counts, q_bi_counts, q_uni_counts,
     predicted_tags = ["O"] * (len(sent))
     ### YOUR CODE HERE
 
-    lambda3 = 1 - lambda1 - lambda2
-    all_tags = e_tag_counts.keys()
-    layer = {('START', 'START'): 0}
-    back_pointers = []
-    sizes = []
-    for word in sent:
-        new_layer = defaultdict(lambda: -math.inf)
-        current_back_pointers = {}
-
-        # Iterate over all possible tags
-        for v in all_tags:
-            if e(word, v, e_tag_counts, e_word_tag_counts) == 0:
-                # move to the next tag
-                continue
-            for (w, u), prev_log_prob in layer.items():
-                log_prob_wuv = (prev_log_prob +
-                                math.log(q_proba(w, u, v, q_tri_counts, q_bi_counts, q_uni_counts, total_tokens, lambda1, lambda2, lambda3))
-                                + math.log(e(word, v, e_tag_counts, e_word_tag_counts)))
-                if log_prob_wuv > new_layer[(u, v)]:
-                    new_layer[(u, v)] = log_prob_wuv
-                    current_back_pointers[(u, v)] = w
-        back_pointers.append(current_back_pointers)
-        layer = {key: value for key, value in new_layer.items() if value > -math.inf}
-        sizes.append(len(layer))
-
-    f = lambda u_v_prob: u_v_prob[1] + math.log(q_proba(u_v_prob[0][0], u_v_prob[0][1], 'STOP', q_tri_counts, q_bi_counts, q_uni_counts, total_tokens, lambda1, lambda2, lambda3))
-    two_final_tags = max(layer.items(), key=f)[0]
-    predicted_tags = list(two_final_tags)
-    for current_back_pointers in back_pointers[::-1][:-2]:
-        w = current_back_pointers[tuple(predicted_tags[:2])]
-        predicted_tags.insert(0, w)
-    if predicted_tags[0] == 'START':
-        predicted_tags = predicted_tags[1:]
+    proba_fn = Probabilities(e_tag_counts,
+                 e_word_tag_counts,
+                 q_tri_counts,
+                 q_bi_counts,
+                 q_uni_counts,
+                 total_tokens,
+                 lambda1,
+                 lambda2,
+                 1-lambda1-lambda2)
+    graph = ViterbiGraph(proba_fn)
+    predicted_tags = graph.predict(sent)
 
     ### END YOUR CODE
     return predicted_tags
@@ -182,6 +243,7 @@ def hmm_eval(test_data, total_tokens, q_tri_counts, q_bi_counts, q_uni_counts, e
         ### END YOUR CODE
 
     return evaluate_ner(gold_tag_seqs, pred_tag_seqs)
+
 
 if __name__ == "__main__":
     start_time = time.time()
