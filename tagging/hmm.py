@@ -236,9 +236,14 @@ def hmm_eval(test_data, total_tokens, q_tri_counts, q_bi_counts, q_uni_counts, e
 
         ### YOUR CODE HERE
         words = [word for word, tag in sent]
-        hmm_tags = hmm_viterbi(words, total_tokens, q_tri_counts, q_bi_counts, q_uni_counts, e_word_tag_counts,
-                                   e_tag_counts,
-                                   0.6, 0.3)
+        hmm_tags = hmm_viterbi(words,
+                               total_tokens,
+                               q_tri_counts,
+                               q_bi_counts,
+                               q_uni_counts,
+                               e_word_tag_counts,
+                               e_tag_counts,
+                               0.5, 0.5)
         pred_tag_seqs.append(tuple(hmm_tags))
         ### END YOUR CODE
 
