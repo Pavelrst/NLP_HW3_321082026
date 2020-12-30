@@ -87,7 +87,8 @@ class NerBiLstmModel(torch.nn.Module):
         # ^ 6 * 50 = 300
         self._dropout = torch.nn.Dropout(config.dropout)
         self._embedding = torch.nn.Embedding.from_pretrained(pretrained_embeddings, freeze=False)
-        self._bilstm = torch.nn.LSTM(BILSTM_INPUT_DIM, int(H / 2), bidirectional=True)
+        self._bilstm = torch.nn.LSTM(BILSTM_INPUT_DIM, int(H / 2), batch_first=True, bidirectional=True)
+        self._relu = torch.nn.ReLU()
         self._linear = torch.nn.Linear(H, C)
         self._softmax = torch.nn.Softmax(2)
         # import pdb; pdb.set_trace()
@@ -114,19 +115,22 @@ class NerBiLstmModel(torch.nn.Module):
         - tag_probs: A tensor of shape (batch_size, max_length, n_classes) which represents the probability
                      for each tag for each word in a sentence.
         """
-        # sentences.shape: (32, 52, 6)
+        # sentences.shape: (32, 113, 6)
         batch_size, seq_length = sentences.shape[0], sentences.shape[1]
-        # ^ 32, 52
+        # ^ 32, 113 (or 52 when running test_training)
         embeddings = self._embedding(sentences).view(batch_size, seq_length, -1)
-        # ^ _embedding() returns tensor of shape [32, 52, 6, 50] ; view() flattened the last two dimensions
-        # ^ shape: 32, 52, 300
+        # ^ _embedding() returns tensor of shape [32, 113, 6, 50] ; view() flattened the last two dimensions
+        # ^ shape: 32, 113, 300
         embeddings_d = self._dropout(embeddings)
         bilstm_output, _ = self._bilstm(embeddings_d)
-        # ^ shape: 32, 52, 300      (because hidden dim is 300, each unidirectional LSTM had hidden dim 150)
+        # ^ shape: 32, 113, 300      (because hidden dim is 300, each unidirectional LSTM had hidden dim 150)
         bilstm_output_d = self._dropout(bilstm_output)
-        logits = self._linear(bilstm_output_d)
-        # ^ shape: 32, 52, 5
+        relu_output = self._relu(bilstm_output_d)
+        logits = self._linear(relu_output)
+        # ^ shape: 32, 113, 5
         tag_probs = self._softmax(logits)
+
+        # import pdb; pdb.set_trace()
 
         return tag_probs
 
@@ -143,7 +147,7 @@ class Trainer(TrainerBase):
         super(Trainer, self).__init__(model, config, helper, logger)
 
         self._mask_label = self._config.n_classes # use label index 5 for masking
-        self._loss_function = torch.nn.CrossEntropyLoss(ignore_index=self._mask_label)
+        self._loss_function = torch.nn.CrossEntropyLoss(ignore_index=self._mask_label, reduction='sum')
         self._optimizer = torch.optim.Adam(model.parameters(), lr=config.lr)
 
     def _train_on_batch(self, sentences, labels, masks):
@@ -259,6 +263,7 @@ def do_training(args):
     train_examples = data['train_examples']
     dev_examples = data['dev_examples']
     helper.save(config.output_path)
+    # import pdb; pdb.set_trace()
 
     # Load embeddings
     embeddings = load_embeddings(args, helper, config.device)
