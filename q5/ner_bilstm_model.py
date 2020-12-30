@@ -210,9 +210,16 @@ class DataPreprocessor(BaseDataPreprocessor):
         zero_label = 4 # corresponds to the 'O' tag
 
         for sentence, labels in examples:
-            ### YOUR CODE HERE (~5 lines)
-            raise NotImplementedError
-            ### END YOUR CODE
+            pad_len = max_length - len(sentence)
+            if pad_len <= 0:
+                ret.append((sentence[:max_length], labels[:max_length], [True] * max_length))
+            else:
+                ret.append((
+                    sentence + [zero_vector] * pad_len,
+                    labels + [zero_label] * pad_len,
+                    [True] * len(sentence) + [False] * pad_len
+                ))
+        
         return ret
 
 def do_training(args):
