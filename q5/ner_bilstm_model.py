@@ -79,10 +79,18 @@ class NerBiLstmModel(torch.nn.Module):
         self.config = config
         self._max_length = min(config.max_length, helper.max_length)
 
+        V, D = pretrained_embeddings.shape  # V, D: 2654, 50
+        H = self.config.hidden_size         # H:    300
+        C = self.config.n_classes           # C:    5
+        assert H % 2 == 0
+        BILSTM_INPUT_DIM = self.config.n_features * D
+        # ^ 6 * 50 = 300
         self._dropout = torch.nn.Dropout(config.dropout)
-        ### YOUR CODE HERE (3 lines)
-        raise NotImplementedError
-        ### END YOUR CODE
+        self._embedding = torch.nn.Embedding.from_pretrained(pretrained_embeddings, freeze=False)
+        self._bilstm = torch.nn.LSTM(BILSTM_INPUT_DIM, int(H / 2), bidirectional=True)
+        self._linear = torch.nn.Linear(H, C)
+        self._softmax = torch.nn.Softmax(2)
+        # import pdb; pdb.set_trace()
 
     def forward(self, sentences):
         """
@@ -106,10 +114,20 @@ class NerBiLstmModel(torch.nn.Module):
         - tag_probs: A tensor of shape (batch_size, max_length, n_classes) which represents the probability
                      for each tag for each word in a sentence.
         """
+        # sentences.shape: (32, 52, 6)
         batch_size, seq_length = sentences.shape[0], sentences.shape[1]
-        ### YOUR CODE HERE (5-9 lines)
-        raise NotImplementedError
-        ### END YOUR CODE
+        # ^ 32, 52
+        embeddings = self._embedding(sentences).view(batch_size, seq_length, -1)
+        # ^ _embedding() returns tensor of shape [32, 52, 6, 50] ; view() flattened the last two dimensions
+        # ^ shape: 32, 52, 300
+        embeddings_d = self._dropout(embeddings)
+        bilstm_output, _ = self._bilstm(embeddings_d)
+        # ^ shape: 32, 52, 300      (because hidden dim is 300, each unidirectional LSTM had hidden dim 150)
+        bilstm_output_d = self._dropout(bilstm_output)
+        logits = self._linear(bilstm_output_d)
+        # ^ shape: 32, 52, 5
+        tag_probs = self._softmax(logits)
+
         return tag_probs
 
 class Trainer(TrainerBase):
@@ -124,9 +142,8 @@ class Trainer(TrainerBase):
         """
         super(Trainer, self).__init__(model, config, helper, logger)
 
-        ### YOUR CODE HERE (1 line)
-        raise NotImplementedError
-        ### END YOUR CODE
+        self._mask_label = self._config.n_classes # use label index 5 for masking
+        self._loss_function = torch.nn.CrossEntropyLoss(ignore_index=self._mask_label)
         self._optimizer = torch.optim.Adam(model.parameters(), lr=config.lr)
 
     def _train_on_batch(self, sentences, labels, masks):
@@ -160,10 +177,12 @@ class Trainer(TrainerBase):
         Returns:
             loss: A 0-d tensor (scalar)
         """
-        ### YOUR CODE HERE (3-6 lines)
-        raise NotImplementedError
-        ### END YOUR CODE
-        loss = self._loss_function(masked_tag_probs, masked_labels)
+        masked_labels = torch.masked_fill(labels, ~masks, self._mask_label)
+        loss = self._loss_function(
+            tag_probs.view(-1, self._config.n_classes),
+            masked_labels.view(-1)
+        )
+        # import pdb; pdb.set_trace()
         return loss
 
 class DataPreprocessor(BaseDataPreprocessor):
