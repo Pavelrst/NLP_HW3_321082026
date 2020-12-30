@@ -90,7 +90,9 @@ class NerBiLstmModel(torch.nn.Module):
         self._bilstm = torch.nn.LSTM(BILSTM_INPUT_DIM, int(H / 2), batch_first=True, bidirectional=True)
         self._relu = torch.nn.ReLU()
         self._linear = torch.nn.Linear(H, C)
-        self._softmax = torch.nn.Softmax(2)
+        self._softmax = torch.nn.LogSoftmax(2)
+        # ^ could also use Softmax() and torch.nn.CrossEntropyLoss(),
+        # but this is more numerically stable / better for calculating gradient
         # import pdb; pdb.set_trace()
 
     def forward(self, sentences):
@@ -147,7 +149,9 @@ class Trainer(TrainerBase):
         super(Trainer, self).__init__(model, config, helper, logger)
 
         self._mask_label = self._config.n_classes # use label index 5 for masking
-        self._loss_function = torch.nn.CrossEntropyLoss(ignore_index=self._mask_label, reduction='sum')
+        self._loss_function = torch.nn.NLLLoss(ignore_index=self._mask_label, reduction='sum')
+        # ^ could also use Softmax() and torch.nn.CrossEntropyLoss(),
+        # but this is more numerically stable / better for calculating gradient
         self._optimizer = torch.optim.Adam(model.parameters(), lr=config.lr)
 
     def _train_on_batch(self, sentences, labels, masks):
