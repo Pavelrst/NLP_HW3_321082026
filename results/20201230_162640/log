@@ -1,0 +1,363 @@
+2020-12-30 16:26:40,074:INFO: Loading training data...
+2020-12-30 16:26:40,272:INFO: Done. Read 14041 sentences
+2020-12-30 16:26:40,272:INFO: Loading dev data...
+2020-12-30 16:26:40,318:INFO: Done. Read 3250 sentences
+2020-12-30 16:26:40,406:INFO: Built dictionary for 10007 features.
+2020-12-30 16:26:41,207:INFO: Initialized embeddings.
+2020-12-30 16:26:41,207:INFO: Initializing model...
+2020-12-30 16:26:42,075:INFO: Starting training...
+2020-12-30 16:26:42,075:INFO: Epoch 1 out of 15
+2020-12-30 16:31:29,951:INFO: Training average loss: 95.73746
+2020-12-30 16:31:29,959:INFO: Evaluating on development data
+2020-12-30 16:31:47,620:DEBUG: Token-level confusion matrix:
+go\gu   	PER     	ORG     	LOC     	MISC    	O       
+PER     	2760.00 	194.00  	115.00  	19.00   	61.00   
+ORG     	137.00  	1575.00 	140.00  	116.00  	124.00  
+LOC     	25.00   	162.00  	1768.00 	80.00   	59.00   
+MISC    	26.00   	155.00  	66.00   	919.00  	102.00  
+O       	43.00   	107.00  	26.00   	69.00   	42514.00
+
+2020-12-30 16:31:47,621:DEBUG: Token-level scores:
+label	acc  	prec 	rec  	f1   
+PER  	0.99 	0.92 	0.88 	0.90 
+ORG  	0.98 	0.72 	0.75 	0.74 
+LOC  	0.99 	0.84 	0.84 	0.84 
+MISC 	0.99 	0.76 	0.72 	0.74 
+O    	0.99 	0.99 	0.99 	0.99 
+micro	0.99 	0.96 	0.96 	0.96 
+macro	0.99 	0.85 	0.84 	0.84 
+not-O	0.99 	0.83 	0.82 	0.82 
+
+2020-12-30 16:31:47,621:INFO: Entity level P/R/F1: 0.74/0.78/0.76
+2020-12-30 16:31:47,621:INFO: New best score! Saving model in results/20201230_162640/model.weights
+2020-12-30 16:31:47,634:INFO: Epoch 2 out of 15
+2020-12-30 16:36:17,899:INFO: Training average loss: 49.22607
+2020-12-30 16:36:17,903:INFO: Evaluating on development data
+2020-12-30 16:36:32,530:DEBUG: Token-level confusion matrix:
+go\gu   	PER     	ORG     	LOC     	MISC    	O       
+PER     	2849.00 	101.00  	96.00   	19.00   	84.00   
+ORG     	93.00   	1697.00 	112.00  	94.00   	96.00   
+LOC     	21.00   	106.00  	1855.00 	60.00   	52.00   
+MISC    	20.00   	87.00   	56.00   	1002.00 	103.00  
+O       	26.00   	82.00   	14.00   	48.00   	42589.00
+
+2020-12-30 16:36:32,531:DEBUG: Token-level scores:
+label	acc  	prec 	rec  	f1   
+PER  	0.99 	0.95 	0.90 	0.93 
+ORG  	0.98 	0.82 	0.81 	0.81 
+LOC  	0.99 	0.87 	0.89 	0.88 
+MISC 	0.99 	0.82 	0.79 	0.80 
+O    	0.99 	0.99 	1.00 	0.99 
+micro	0.99 	0.97 	0.97 	0.97 
+macro	0.99 	0.89 	0.88 	0.88 
+not-O	0.99 	0.88 	0.86 	0.87 
+
+2020-12-30 16:36:32,531:INFO: Entity level P/R/F1: 0.82/0.83/0.83
+2020-12-30 16:36:32,532:INFO: New best score! Saving model in results/20201230_162640/model.weights
+2020-12-30 16:36:32,541:INFO: Epoch 3 out of 15
+2020-12-30 16:40:25,180:INFO: Training average loss: 34.11464
+2020-12-30 16:40:25,185:INFO: Evaluating on development data
+2020-12-30 16:40:40,156:DEBUG: Token-level confusion matrix:
+go\gu   	PER     	ORG     	LOC     	MISC    	O       
+PER     	2934.00 	41.00   	75.00   	27.00   	72.00   
+ORG     	97.00   	1668.00 	100.00  	108.00  	119.00  
+LOC     	28.00   	48.00   	1920.00 	53.00   	45.00   
+MISC    	26.00   	52.00   	43.00   	1044.00 	103.00  
+O       	27.00   	40.00   	17.00   	40.00   	42635.00
+
+2020-12-30 16:40:40,158:DEBUG: Token-level scores:
+label	acc  	prec 	rec  	f1   
+PER  	0.99 	0.94 	0.93 	0.94 
+ORG  	0.99 	0.90 	0.80 	0.85 
+LOC  	0.99 	0.89 	0.92 	0.90 
+MISC 	0.99 	0.82 	0.82 	0.82 
+O    	0.99 	0.99 	1.00 	0.99 
+micro	0.99 	0.98 	0.98 	0.98 
+macro	0.99 	0.91 	0.89 	0.90 
+not-O	0.99 	0.90 	0.88 	0.89 
+
+2020-12-30 16:40:40,158:INFO: Entity level P/R/F1: 0.85/0.86/0.85
+2020-12-30 16:40:40,158:INFO: New best score! Saving model in results/20201230_162640/model.weights
+2020-12-30 16:40:40,167:INFO: Epoch 4 out of 15
+2020-12-30 16:44:17,419:INFO: Training average loss: 25.79713
+2020-12-30 16:44:17,423:INFO: Evaluating on development data
+2020-12-30 16:44:29,877:DEBUG: Token-level confusion matrix:
+go\gu   	PER     	ORG     	LOC     	MISC    	O       
+PER     	2994.00 	16.00   	71.00   	13.00   	55.00   
+ORG     	100.00  	1708.00 	123.00  	73.00   	88.00   
+LOC     	34.00   	31.00   	1964.00 	33.00   	32.00   
+MISC    	30.00   	48.00   	57.00   	1046.00 	87.00   
+O       	36.00   	63.00   	21.00   	39.00   	42600.00
+
+2020-12-30 16:44:29,877:DEBUG: Token-level scores:
+label	acc  	prec 	rec  	f1   
+PER  	0.99 	0.94 	0.95 	0.94 
+ORG  	0.99 	0.92 	0.82 	0.86 
+LOC  	0.99 	0.88 	0.94 	0.91 
+MISC 	0.99 	0.87 	0.82 	0.85 
+O    	0.99 	0.99 	1.00 	1.00 
+micro	0.99 	0.98 	0.98 	0.98 
+macro	0.99 	0.92 	0.91 	0.91 
+not-O	0.99 	0.91 	0.90 	0.90 
+
+2020-12-30 16:44:29,877:INFO: Entity level P/R/F1: 0.87/0.88/0.87
+2020-12-30 16:44:29,877:INFO: New best score! Saving model in results/20201230_162640/model.weights
+2020-12-30 16:44:29,885:INFO: Epoch 5 out of 15
+2020-12-30 16:47:15,796:INFO: Training average loss: 20.93353
+2020-12-30 16:47:15,797:INFO: Evaluating on development data
+2020-12-30 16:47:26,815:DEBUG: Token-level confusion matrix:
+go\gu   	PER     	ORG     	LOC     	MISC    	O       
+PER     	3024.00 	22.00   	44.00   	11.00   	48.00   
+ORG     	124.00  	1766.00 	71.00   	54.00   	77.00   
+LOC     	41.00   	55.00   	1942.00 	24.00   	32.00   
+MISC    	44.00   	64.00   	31.00   	1048.00 	81.00   
+O       	44.00   	74.00   	16.00   	31.00   	42594.00
+
+2020-12-30 16:47:26,816:DEBUG: Token-level scores:
+label	acc  	prec 	rec  	f1   
+PER  	0.99 	0.92 	0.96 	0.94 
+ORG  	0.99 	0.89 	0.84 	0.87 
+LOC  	0.99 	0.92 	0.93 	0.93 
+MISC 	0.99 	0.90 	0.83 	0.86 
+O    	0.99 	0.99 	1.00 	1.00 
+micro	0.99 	0.98 	0.98 	0.98 
+macro	0.99 	0.93 	0.91 	0.92 
+not-O	0.99 	0.91 	0.90 	0.91 
+
+2020-12-30 16:47:26,816:INFO: Entity level P/R/F1: 0.87/0.88/0.88
+2020-12-30 16:47:26,817:INFO: New best score! Saving model in results/20201230_162640/model.weights
+2020-12-30 16:47:26,822:INFO: Epoch 6 out of 15
+2020-12-30 16:50:11,763:INFO: Training average loss: 18.10566
+2020-12-30 16:50:11,767:INFO: Evaluating on development data
+2020-12-30 16:50:22,912:DEBUG: Token-level confusion matrix:
+go\gu   	PER     	ORG     	LOC     	MISC    	O       
+PER     	3025.00 	22.00   	43.00   	12.00   	47.00   
+ORG     	113.00  	1790.00 	58.00   	59.00   	72.00   
+LOC     	30.00   	57.00   	1937.00 	32.00   	38.00   
+MISC    	36.00   	70.00   	27.00   	1046.00 	89.00   
+O       	41.00   	73.00   	16.00   	29.00   	42600.00
+
+2020-12-30 16:50:22,914:DEBUG: Token-level scores:
+label	acc  	prec 	rec  	f1   
+PER  	0.99 	0.93 	0.96 	0.95 
+ORG  	0.99 	0.89 	0.86 	0.87 
+LOC  	0.99 	0.93 	0.93 	0.93 
+MISC 	0.99 	0.89 	0.82 	0.86 
+O    	0.99 	0.99 	1.00 	1.00 
+micro	0.99 	0.98 	0.98 	0.98 
+macro	0.99 	0.93 	0.91 	0.92 
+not-O	0.99 	0.92 	0.91 	0.91 
+
+2020-12-30 16:50:22,914:INFO: Entity level P/R/F1: 0.88/0.89/0.88
+2020-12-30 16:50:22,914:INFO: New best score! Saving model in results/20201230_162640/model.weights
+2020-12-30 16:50:22,920:INFO: Epoch 7 out of 15
+2020-12-30 16:53:07,819:INFO: Training average loss: 15.47762
+2020-12-30 16:53:07,822:INFO: Evaluating on development data
+2020-12-30 16:53:18,690:DEBUG: Token-level confusion matrix:
+go\gu   	PER     	ORG     	LOC     	MISC    	O       
+PER     	2933.00 	63.00   	71.00   	18.00   	64.00   
+ORG     	67.00   	1815.00 	74.00   	69.00   	67.00   
+LOC     	18.00   	56.00   	1947.00 	37.00   	36.00   
+MISC    	28.00   	57.00   	34.00   	1069.00 	80.00   
+O       	23.00   	72.00   	20.00   	34.00   	42610.00
+
+2020-12-30 16:53:18,691:DEBUG: Token-level scores:
+label	acc  	prec 	rec  	f1   
+PER  	0.99 	0.96 	0.93 	0.94 
+ORG  	0.99 	0.88 	0.87 	0.87 
+LOC  	0.99 	0.91 	0.93 	0.92 
+MISC 	0.99 	0.87 	0.84 	0.86 
+O    	0.99 	0.99 	1.00 	1.00 
+micro	0.99 	0.98 	0.98 	0.98 
+macro	0.99 	0.92 	0.91 	0.92 
+not-O	0.99 	0.91 	0.90 	0.91 
+
+2020-12-30 16:53:18,691:INFO: Entity level P/R/F1: 0.87/0.88/0.88
+2020-12-30 16:53:18,691:INFO: Epoch 8 out of 15
+2020-12-30 16:56:14,870:INFO: Training average loss: 14.53123
+2020-12-30 16:56:14,873:INFO: Evaluating on development data
+2020-12-30 16:56:25,979:DEBUG: Token-level confusion matrix:
+go\gu   	PER     	ORG     	LOC     	MISC    	O       
+PER     	3039.00 	26.00   	33.00   	4.00    	47.00   
+ORG     	111.00  	1800.00 	61.00   	42.00   	78.00   
+LOC     	37.00   	63.00   	1945.00 	13.00   	36.00   
+MISC    	50.00   	71.00   	31.00   	1027.00 	89.00   
+O       	52.00   	62.00   	16.00   	20.00   	42609.00
+
+2020-12-30 16:56:25,981:DEBUG: Token-level scores:
+label	acc  	prec 	rec  	f1   
+PER  	0.99 	0.92 	0.97 	0.94 
+ORG  	0.99 	0.89 	0.86 	0.88 
+LOC  	0.99 	0.93 	0.93 	0.93 
+MISC 	0.99 	0.93 	0.81 	0.87 
+O    	0.99 	0.99 	1.00 	1.00 
+micro	0.99 	0.98 	0.98 	0.98 
+macro	0.99 	0.93 	0.91 	0.92 
+not-O	0.99 	0.92 	0.91 	0.91 
+
+2020-12-30 16:56:25,982:INFO: Entity level P/R/F1: 0.88/0.89/0.89
+2020-12-30 16:56:25,982:INFO: New best score! Saving model in results/20201230_162640/model.weights
+2020-12-30 16:56:25,990:INFO: Epoch 9 out of 15
+2020-12-30 16:59:18,167:INFO: Training average loss: 12.81216
+2020-12-30 16:59:18,170:INFO: Evaluating on development data
+2020-12-30 16:59:30,862:DEBUG: Token-level confusion matrix:
+go\gu   	PER     	ORG     	LOC     	MISC    	O       
+PER     	2999.00 	34.00   	40.00   	16.00   	60.00   
+ORG     	80.00   	1788.00 	65.00   	85.00   	74.00   
+LOC     	21.00   	73.00   	1942.00 	31.00   	27.00   
+MISC    	33.00   	53.00   	27.00   	1080.00 	75.00   
+O       	34.00   	77.00   	20.00   	47.00   	42581.00
+
+2020-12-30 16:59:30,864:DEBUG: Token-level scores:
+label	acc  	prec 	rec  	f1   
+PER  	0.99 	0.95 	0.95 	0.95 
+ORG  	0.99 	0.88 	0.85 	0.87 
+LOC  	0.99 	0.93 	0.93 	0.93 
+MISC 	0.99 	0.86 	0.85 	0.85 
+O    	0.99 	0.99 	1.00 	1.00 
+micro	0.99 	0.98 	0.98 	0.98 
+macro	0.99 	0.92 	0.92 	0.92 
+not-O	0.99 	0.91 	0.91 	0.91 
+
+2020-12-30 16:59:30,864:INFO: Entity level P/R/F1: 0.88/0.88/0.88
+2020-12-30 16:59:30,864:INFO: Epoch 10 out of 15
+2020-12-30 17:03:06,475:INFO: Training average loss: 11.63035
+2020-12-30 17:03:06,478:INFO: Evaluating on development data
+2020-12-30 17:03:22,731:DEBUG: Token-level confusion matrix:
+go\gu   	PER     	ORG     	LOC     	MISC    	O       
+PER     	2971.00 	46.00   	60.00   	12.00   	60.00   
+ORG     	84.00   	1830.00 	58.00   	47.00   	73.00   
+LOC     	21.00   	79.00   	1942.00 	16.00   	36.00   
+MISC    	30.00   	71.00   	28.00   	1048.00 	91.00   
+O       	28.00   	77.00   	16.00   	26.00   	42612.00
+
+2020-12-30 17:03:22,733:DEBUG: Token-level scores:
+label	acc  	prec 	rec  	f1   
+PER  	0.99 	0.95 	0.94 	0.95 
+ORG  	0.99 	0.87 	0.87 	0.87 
+LOC  	0.99 	0.92 	0.93 	0.93 
+MISC 	0.99 	0.91 	0.83 	0.87 
+O    	0.99 	0.99 	1.00 	1.00 
+micro	0.99 	0.98 	0.98 	0.98 
+macro	0.99 	0.93 	0.91 	0.92 
+not-O	0.99 	0.92 	0.91 	0.91 
+
+2020-12-30 17:03:22,733:INFO: Entity level P/R/F1: 0.88/0.89/0.88
+2020-12-30 17:03:22,733:INFO: Epoch 11 out of 15
+2020-12-30 17:06:40,277:INFO: Training average loss: 11.50078
+2020-12-30 17:06:40,281:INFO: Evaluating on development data
+2020-12-30 17:06:53,095:DEBUG: Token-level confusion matrix:
+go\gu   	PER     	ORG     	LOC     	MISC    	O       
+PER     	2992.00 	47.00   	45.00   	13.00   	52.00   
+ORG     	82.00   	1802.00 	68.00   	70.00   	70.00   
+LOC     	28.00   	61.00   	1952.00 	24.00   	29.00   
+MISC    	36.00   	64.00   	38.00   	1062.00 	68.00   
+O       	25.00   	63.00   	19.00   	43.00   	42609.00
+
+2020-12-30 17:06:53,098:DEBUG: Token-level scores:
+label	acc  	prec 	rec  	f1   
+PER  	0.99 	0.95 	0.95 	0.95 
+ORG  	0.99 	0.88 	0.86 	0.87 
+LOC  	0.99 	0.92 	0.93 	0.93 
+MISC 	0.99 	0.88 	0.84 	0.86 
+O    	0.99 	0.99 	1.00 	1.00 
+micro	0.99 	0.98 	0.98 	0.98 
+macro	0.99 	0.92 	0.92 	0.92 
+not-O	0.99 	0.91 	0.91 	0.91 
+
+2020-12-30 17:06:53,099:INFO: Entity level P/R/F1: 0.88/0.89/0.88
+2020-12-30 17:06:53,099:INFO: Epoch 12 out of 15
+2020-12-30 17:10:39,761:INFO: Training average loss: 10.66043
+2020-12-30 17:10:39,764:INFO: Evaluating on development data
+2020-12-30 17:10:59,692:DEBUG: Token-level confusion matrix:
+go\gu   	PER     	ORG     	LOC     	MISC    	O       
+PER     	3004.00 	34.00   	43.00   	15.00   	53.00   
+ORG     	92.00   	1797.00 	66.00   	67.00   	70.00   
+LOC     	29.00   	55.00   	1962.00 	22.00   	26.00   
+MISC    	30.00   	51.00   	31.00   	1089.00 	67.00   
+O       	28.00   	58.00   	25.00   	40.00   	42608.00
+
+2020-12-30 17:10:59,694:DEBUG: Token-level scores:
+label	acc  	prec 	rec  	f1   
+PER  	0.99 	0.94 	0.95 	0.95 
+ORG  	0.99 	0.90 	0.86 	0.88 
+LOC  	0.99 	0.92 	0.94 	0.93 
+MISC 	0.99 	0.88 	0.86 	0.87 
+O    	0.99 	0.99 	1.00 	1.00 
+micro	0.99 	0.98 	0.98 	0.98 
+macro	0.99 	0.93 	0.92 	0.92 
+not-O	0.99 	0.92 	0.91 	0.92 
+
+2020-12-30 17:10:59,695:INFO: Entity level P/R/F1: 0.88/0.89/0.89
+2020-12-30 17:10:59,695:INFO: New best score! Saving model in results/20201230_162640/model.weights
+2020-12-30 17:10:59,712:INFO: Epoch 13 out of 15
+2020-12-30 17:15:23,408:INFO: Training average loss: 9.71033
+2020-12-30 17:15:23,412:INFO: Evaluating on development data
+2020-12-30 17:15:36,984:DEBUG: Token-level confusion matrix:
+go\gu   	PER     	ORG     	LOC     	MISC    	O       
+PER     	3006.00 	45.00   	36.00   	11.00   	51.00   
+ORG     	85.00   	1855.00 	52.00   	45.00   	55.00   
+LOC     	38.00   	99.00   	1912.00 	17.00   	28.00   
+MISC    	38.00   	79.00   	28.00   	1057.00 	66.00   
+O       	38.00   	101.00  	18.00   	41.00   	42561.00
+
+2020-12-30 17:15:36,985:DEBUG: Token-level scores:
+label	acc  	prec 	rec  	f1   
+PER  	0.99 	0.94 	0.95 	0.95 
+ORG  	0.99 	0.85 	0.89 	0.87 
+LOC  	0.99 	0.93 	0.91 	0.92 
+MISC 	0.99 	0.90 	0.83 	0.87 
+O    	0.99 	1.00 	1.00 	1.00 
+micro	0.99 	0.98 	0.98 	0.98 
+macro	0.99 	0.92 	0.92 	0.92 
+not-O	0.99 	0.91 	0.91 	0.91 
+
+2020-12-30 17:15:36,985:INFO: Entity level P/R/F1: 0.87/0.88/0.88
+2020-12-30 17:15:36,985:INFO: Epoch 14 out of 15
+2020-12-30 17:19:09,725:INFO: Training average loss: 9.53432
+2020-12-30 17:19:09,728:INFO: Evaluating on development data
+2020-12-30 17:19:24,648:DEBUG: Token-level confusion matrix:
+go\gu   	PER     	ORG     	LOC     	MISC    	O       
+PER     	2972.00 	50.00   	58.00   	24.00   	45.00   
+ORG     	75.00   	1815.00 	64.00   	81.00   	57.00   
+LOC     	17.00   	79.00   	1940.00 	31.00   	27.00   
+MISC    	25.00   	57.00   	35.00   	1084.00 	67.00   
+O       	37.00   	77.00   	17.00   	40.00   	42588.00
+
+2020-12-30 17:19:24,650:DEBUG: Token-level scores:
+label	acc  	prec 	rec  	f1   
+PER  	0.99 	0.95 	0.94 	0.95 
+ORG  	0.99 	0.87 	0.87 	0.87 
+LOC  	0.99 	0.92 	0.93 	0.92 
+MISC 	0.99 	0.86 	0.85 	0.86 
+O    	0.99 	1.00 	1.00 	1.00 
+micro	0.99 	0.98 	0.98 	0.98 
+macro	0.99 	0.92 	0.92 	0.92 
+not-O	0.99 	0.91 	0.91 	0.91 
+
+2020-12-30 17:19:24,650:INFO: Entity level P/R/F1: 0.87/0.89/0.88
+2020-12-30 17:19:24,651:INFO: Epoch 15 out of 15
+2020-12-30 17:23:24,667:INFO: Training average loss: 8.85262
+2020-12-30 17:23:24,671:INFO: Evaluating on development data
+2020-12-30 17:23:41,272:DEBUG: Token-level confusion matrix:
+go\gu   	PER     	ORG     	LOC     	MISC    	O       
+PER     	3017.00 	36.00   	35.00   	12.00   	49.00   
+ORG     	87.00   	1832.00 	57.00   	54.00   	62.00   
+LOC     	27.00   	52.00   	1946.00 	26.00   	43.00   
+MISC    	36.00   	57.00   	23.00   	1076.00 	76.00   
+O       	34.00   	74.00   	12.00   	35.00   	42604.00
+
+2020-12-30 17:23:41,272:DEBUG: Token-level scores:
+label	acc  	prec 	rec  	f1   
+PER  	0.99 	0.94 	0.96 	0.95 
+ORG  	0.99 	0.89 	0.88 	0.88 
+LOC  	0.99 	0.94 	0.93 	0.93 
+MISC 	0.99 	0.89 	0.85 	0.87 
+O    	0.99 	0.99 	1.00 	1.00 
+micro	0.99 	0.98 	0.98 	0.98 
+macro	0.99 	0.93 	0.92 	0.93 
+not-O	0.99 	0.92 	0.91 	0.92 
+
+2020-12-30 17:23:41,273:INFO: Entity level P/R/F1: 0.89/0.89/0.89
+2020-12-30 17:23:41,273:INFO: New best score! Saving model in results/20201230_162640/model.weights
+2020-12-30 17:23:44,373:INFO: Training completed, saving predictions of the best model...
