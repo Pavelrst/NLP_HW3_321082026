@@ -4,6 +4,7 @@ from data import *
 from collections import defaultdict, Counter
 import math
 
+MIN_LAYER_SIZE_TO_PRUNE = 4
 
 class Probabilities():
     def __init__(self, e_tag_counts,
@@ -59,9 +60,10 @@ class Probabilities():
             return 0
 
 class Layer():
-    def __init__(self):
-        self.layer_dict = defaultdict(lambda: -math.inf)
+    def __init__(self, init_val):
+        self.layer_dict = defaultdict(lambda: init_val)
         self.back_pointers = {}
+        self.init_val = init_val
 
     def set_proba(self, tag1, tag2, log_proba):
         self.layer_dict[(tag1, tag2)] = log_proba
@@ -75,11 +77,11 @@ class Layer():
     def get_back_pointers(self):
         return self.back_pointers
 
-    def drop_lows(self):
-        for key in self.layer_dict.keys():
-            if self.layer_dict[key] < -math.inf:
-                del self.layer_dict[key]
-
+    def prune(self):
+        if len(self.layer_dict) > MIN_LAYER_SIZE_TO_PRUNE:
+            weak_key = sorted(self.layer_dict.items(), key=lambda item: item[1])[0][0]
+            del self.layer_dict[weak_key]
+        return
 
 
 class ViterbiGraph():
@@ -97,11 +99,11 @@ class ViterbiGraph():
         return log_proba + math.log(self.proba_fn.q_proba(tag1, tag2, 'STOP'))
 
     def predict(self, sent):
-        layer = Layer()
+        layer = Layer(init_val=-math.inf)
         layer.set_proba('START', 'START', 0)
 
         for word in sent:
-            new_layer = Layer()
+            new_layer = Layer(init_val=-math.inf)
             for v in self.all_tags:
                 if not self.proba_fn.e_proba(word=word, tag=v) == 0:
                     for (w, u), prev_log_prob in layer.layer_dict.items():
@@ -116,7 +118,7 @@ class ViterbiGraph():
                             new_layer.set_back_pointer(u, v, w)
 
             self.total_back_pointers_list.append(new_layer.get_back_pointers())
-            new_layer.drop_lows()
+            new_layer.prune()
             layer = new_layer
 
         final_pair = max(layer.layer_dict.items(), key=self.compare_fn)[0]

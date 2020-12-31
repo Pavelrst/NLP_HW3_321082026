@@ -88,7 +88,15 @@ Entity level P/R/F1: 0.78/0.82/0.80
 
 \begin{itemize}
     \item[(a)] (no written deliverable required)
-    \item[(b)] TODO: documentation of pruning
+    \item[(b)] Our pruning policy is to drop out a pair of tags with lowest value in each layer. Layers smaller than 4 are not pruned. The pruning function implementation in pseudo-code:
+    \begin{verbatim}
+        def prune(self):
+        if len(self.layer_dict) > MIN_LAYER_SIZE_TO_PRUNE:
+            weak_key = key with lowest value
+            del self.layer_dict[weak_key]
+        return
+    \end{verbatim}
+   
     \item[(c)] $F_1$ on dev set: 0.80
     
     Full output of hmm.py:
