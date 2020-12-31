@@ -246,6 +246,37 @@ Entity level P/R/F1: 0.87/0.83/0.85
     \end{verbatim}
 
     \item[(e)] 
+    From the confusion matrix we see the largest source of error is false negatives (entities being falsely tagged as O). Some examples from the corpus:
+    
+    \begin{itemize}
+    \item " Seven percent lowerCase lowerCase problems and a lowerCase lowerCase for money from lowerCase , " said initCap initCap , chief technical analyst at Raymond James .
+
+    "Raymond" was tagged as O instead of PER.
+
+    \item FTSE close \$ containsDigitAndPeriod \$ containsDigitAndPeriod
+
+    "FTSE" was tagged as O instead of MISC.
+
+    \item The girl was abducted from her school in initCap near Berlin on Monday
+    
+    "initCap" (preprocessed rare word) was tagged as O instead of LOC.
+
+    \end{itemize}
+    
+    Among confusion between entity types, some of the most common are PER being mistakenly tagged as ORG and ORG being mistakenly tagged as LOC. Examples:
+
+    \begin{itemize}
+        \item Traders said the initCap 's decision to lowerCase a lowerCase lowerCase at the July allCaps meeting has cast more focus on every piece of U.S. economic news .
+        
+        First "initCap" (preprocessed rare word) was tagged as LOC instead of ORG.
+
+        \item initCap signed a pact with Moscow in April to create a strong economic and political union which he believes could grow into a federation .
+        
+        First "initCap" (preprocessed rare word) was tagged as ORG instead of PER.
+    \end{itemize}
+
+    Both of these are understandable error types. False negatives mean that the model may be too conservative in its predictions, not predicting an entity because it cannot reach sufficient confidence. The confusions between PER/ORG/LOC seem especially common for "initCap" tokens which makes sense because when the identity of the word is lost, just knowing that it starts with a capital letter does not give much information about whether it is a person, organization, or place, and this is not always clear from context.
+
 \end{itemize}
 
 \section*{5. BiLSTM Tagger}
