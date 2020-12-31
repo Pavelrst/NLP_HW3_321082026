@@ -47,12 +47,94 @@
 
 \section*{1. Data Preprocessing}
 
+(no written deliverable required)
+
 \section*{2. Most Frequent Tag Baseline}
+
+\begin{itemize}
+    \item[(a)] (no written deliverable required)
+    \item[(b)] 
+
+$F_1$ score on dev set: 0.80
+
+Full output reproduced here for completeness:
+
+\begin{verbatim}
+Token-level confusion matrix:
+go\gu   	PER     	ORG     	LOC     	MISC    	O       
+PER     	3033.00 	20.00   	29.00   	5.00    	62.00   
+ORG     	494.00  	1139.00 	157.00  	43.00   	259.00  
+LOC     	287.00  	146.00  	1510.00 	21.00   	130.00  
+MISC    	219.00  	29.00   	52.00   	842.00  	126.00  
+O       	290.00  	46.00   	6.00    	27.00   	42390.00
+
+Token-level scores:
+label	acc  	prec 	rec  	f1   
+PER  	0.97 	0.70 	0.96 	0.81 
+ORG  	0.98 	0.83 	0.54 	0.66 
+LOC  	0.98 	0.86 	0.72 	0.78 
+MISC 	0.99 	0.90 	0.66 	0.76 
+O    	0.98 	0.99 	0.99 	0.99 
+micro	0.98 	0.95 	0.95 	0.95 
+macro	0.98 	0.85 	0.78 	0.80 
+not-O	0.98 	0.78 	0.76 	0.77 
+
+Entity level P/R/F1: 0.78/0.82/0.80
+\end{verbatim}
+
+\end{itemize}
 
 \section*{3. HMM Tagger}
 
+\begin{itemize}
+    \item[(a)] (no written deliverable required)
+    \item[(b)] TODO: documentation of pruning
+    \item[(c)] $F_1$ on dev set: 0.80
+    
+    Full output of hmm.py:
+
+    \begin{verbatim}
+Token-level confusion matrix:
+go\gu   	PER     	ORG     	LOC     	MISC    	O       
+PER     	3036.00 	56.00   	19.00   	12.00   	26.00   
+ORG     	327.00  	1467.00 	125.00  	41.00   	132.00  
+LOC     	271.00  	227.00  	1542.00 	25.00   	29.00   
+MISC    	180.00  	58.00   	19.00   	930.00  	81.00   
+O       	268.00  	234.00  	15.00   	76.00   	42166.00
+
+Token-level scores:
+label	acc  	prec 	rec  	f1   
+PER  	0.98 	0.74 	0.96 	0.84 
+ORG  	0.98 	0.72 	0.70 	0.71 
+LOC  	0.99 	0.90 	0.74 	0.81 
+MISC 	0.99 	0.86 	0.73 	0.79 
+O    	0.98 	0.99 	0.99 	0.99 
+micro	0.98 	0.96 	0.96 	0.96 
+macro	0.98 	0.84 	0.82 	0.83 
+not-O	0.98 	0.78 	0.81 	0.80 
+
+Entity level P/R/F1: 0.81/0.86/0.84
+    \end{verbatim}
+
+    \item[(d)] \begin{verbatim} P(x_8 = 'LOC') = 0.024332529500131664 \end{verbatim}
+    \item[(e)]
+\end{itemize}
+
 \section*{4. MEMM Tagger}
 
+\begin{itemize}
+    \item[(a)] (no written deliverable required)
+    \item[(b)] (no written deliverable required)
+    \item[(c)]
+    \item[(d)] 
+\end{itemize}
+
 \section*{5. BiLSTM Tagger}
+
+\begin{itemize}
+    \item[(a)]
+    \item[(b)]
+    \item[(c)]
+\end{itemize}
 
 \end{document}
