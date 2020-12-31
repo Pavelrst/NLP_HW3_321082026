@@ -202,9 +202,9 @@ Entity level P/R/F1: 0.87/0.83/0.85
 \section*{5. BiLSTM Tagger}
 
 \begin{itemize}
-    \item[(a)]
-    \item[(b)]
-    \item[(c)]
+    \item[(a)] Without masking, some of the terms in the loss function would be $CE(y^{(t)}, \hat{y}^{(t)})$ where $t$ is the timestep of padding. In other words, the loss will be higher as long as the model does not emit "0-vector" output in padding positions, and the gradient will be biased towards changes that make the model give such output in padding positions. We expect that this will make the model take longer to learn NER tagging in non-padded positions. Masking solves this because all of these terms will have added coefficient $0$ and thus will not contribute to the loss.
+    \item[(b)] (no written deliverable required)
+    \item[(c)] See q5/predictions.conll and q5/log for deliverables. Best dev $F_1$ score: 0.89
 \end{itemize}
 
 \end{document}
