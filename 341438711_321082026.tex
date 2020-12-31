@@ -1,0 +1,58 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{bm}
+\usepackage{bbm}
+\usepackage{tikz}
+
+\usetikzlibrary{shapes}
+\usetikzlibrary{automata, positioning, arrows}
+
+\usepackage[shortlabels]{enumitem}
+\usepackage[noabbrev, capitalise]{cleveref}
+
+\usepackage{geometry}
+ \geometry{
+ a4paper,
+ top=20mm,
+ bottom=25mm,
+ left=25mm,
+ right=25mm,
+ }
+
+% define your IDs here:
+\newcommand{\firststudentid}{341438711}
+\newcommand{\secondstudentid}{321082026}
+
+\pagestyle{fancy}
+\fancyhf{}
+\rhead{Written Solution for Assignment 3}
+\chead{\firststudentid \qquad \secondstudentid}
+\lhead{Natural Language Processing}
+\rfoot{Page \thepage \hspace{1pt} of \pageref{LastPage}}
+\renewcommand{\footrulewidth}{1pt}
+ 
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{1em}
+\renewcommand{\baselinestretch}{1.25}
+
+\renewcommand{\thesubsection}{\thesection.\alph{subsection}}
+\renewcommand{\thesubsubsection}{\thesubsection.\roman{subsubsection}}
+
+\begin{document}
+
+\section*{1. Data Preprocessing}
+
+\section*{2. Most Frequent Tag Baseline}
+
+\section*{3. HMM Tagger}
+
+\section*{4. MEMM Tagger}
+
+\section*{5. BiLSTM Tagger}
+
+\end{document}
