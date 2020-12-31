@@ -126,6 +126,55 @@ Entity level P/R/F1: 0.81/0.86/0.84
 
     \item[(d)] \begin{verbatim} P(x_8 = 'LOC') = 0.024332529500131664 \end{verbatim}
     \item[(e)]
+    
+    Let $A, B, X, Y$ be hidden states (plus start state *) and $t, x, y$ be possible tokens.
+    Suppose the training corpus consists of the sentences:
+    \begin{itemize}
+        \item t/A x/X (sentence repeated 891 times in training corpus)
+        \item t/A y/Y (sentence repeated 9 times in training corpus)
+        \item t/B y/Y (sentence repeated 100 times in training corpus)
+    \end{itemize}
+    Where each q/R indicates token q with labelled hidden state R.
+
+    By ML estimation, the transition probabilities in $Q$ are
+    \begin{itemize}
+        \item $q_{*A} = P(A | *) = 0.9$
+        \item $q_{*B} = P(B | *) = 0.1$
+        \item $q_{AX} = P(X | A) = 0.99$
+        \item $q_{AY} = P(Y | A) = 0.01$
+        \item $q_{BX} = P(X | B) = 0$
+        \item $q_{BY} = P(Y | B) = 1$
+        \item (all other transition probabilities are zero)
+    \end{itemize}
+
+    and the emission probabilities in $E$ are
+    \begin{itemize}
+        \item $e_{At} = e_{Bt} = e_{Xx} = e_{Yy} = 1$
+        \item (all other emissison probabilities are zero)
+    \end{itemize}
+
+    Now consider the sentence $s = ty$.
+
+    The greedy decoding algorithm first calculates the possibilities for the first hidden state:
+    \begin{itemize}
+        \item $q_{*A}e_{At} = 0.9 \cdot 1 = 0.9$ $\leftarrow$ winner
+        \item $q_{*B}e_{Bt} = 0.1 \cdot 1 = 0.1$
+        \item $q_{*X}e_{Xt} = 0 \cdot 0 = 0$
+        \item $q_{*Y}e_{Yt} = 0 \cdot 0 = 0$
+    \end{itemize}
+    so it sets the first hidden state to $A$. Then it calculates the possibilities for the second hidden state:
+    \begin{itemize}
+        \item $q_{AA}e_{Ay} = 0 \cdot 0 = 0$
+        \item $q_{AB}e_{By} = 0 \cdot 0 = 0$
+        \item $q_{AX}e_{Xy} = 0.99 \cdot 0 = 0$
+        \item $q_{AY}e_{Yy} = 0.01 \cdot 1 = 0.01$ $\leftarrow$ winner
+    \end{itemize}
+    Therefore the output of the greedy decoding algorithm is $AY$, which has total probability $q_{*A}e_{At}q_{AY}e_{Yy} = 0.9 \cdot 0.01 = 0.009$.
+
+    On the other hand, we calculate that the total probability of the hidden state sequence $BY$ is $q_{*B}e_{Bt}q_{BY}e_{Yy} = 0.1 \cdot 1 \cdot 1 \cdot 1 = 0.1$, which is higher.
+
+    Therefore Viterbi will return a different result than greedy decoding.
+
 \end{itemize}
 
 \section*{4. MEMM Tagger}
