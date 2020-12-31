@@ -97,7 +97,7 @@ Entity level P/R/F1: 0.78/0.82/0.80
         return
     \end{verbatim}
    
-    \item[(c)] $F_1$ on dev set: 0.80
+    \item[(c)] $F_1$ on dev set: 0.84
     
     Full output of hmm.py:
 
@@ -133,8 +133,70 @@ Entity level P/R/F1: 0.81/0.86/0.84
 \begin{itemize}
     \item[(a)] (no written deliverable required)
     \item[(b)] (no written deliverable required)
-    \item[(c)]
-    \item[(d)] 
+    \item[(c)] Optimizations used:
+    \begin{itemize}
+
+    \item At each step, the predict(...) function of LogisticRegression is called on all candidates at once (one feature matrix where each row is a candidate path). This is more efficient than calling it on each candidate path separately.
+    \item Scores and candidate paths are cached in the variable best\textunderscore paths
+    \item For numerical stability, summed log-probabilities are used instead of the product of probabilities.
+    \item Paths (partially tagged sentences) that are not extended on a step are pruned (overwritten).
+    \end{itemize}
+
+    \item[(d)] $F_1$ on dev set: 0.85 for both greedy and Viterbi decoding.
+    
+Greedy decoding output:
+
+\begin{verbatim}
+    Token-level confusion matrix:
+go\gu   	PER     	ORG     	LOC     	MISC    	O       
+PER     	2778.00 	53.00   	71.00   	22.00   	225.00  
+ORG     	108.00  	1607.00 	80.00   	44.00   	253.00  
+LOC     	41.00   	101.00  	1729.00 	27.00   	196.00  
+MISC    	40.00   	38.00   	25.00   	1004.00 	161.00  
+O       	55.00   	87.00   	42.00   	64.00   	42511.00
+
+Token-level scores:
+label	acc  	prec 	rec  	f1   
+PER  	0.99 	0.92 	0.88 	0.90 
+ORG  	0.99 	0.85 	0.77 	0.81 
+LOC  	0.99 	0.89 	0.83 	0.86 
+MISC 	0.99 	0.86 	0.79 	0.83 
+O    	0.98 	0.98 	0.99 	0.99 
+micro	0.99 	0.97 	0.97 	0.97 
+macro	0.99 	0.90 	0.85 	0.88 
+not-O	0.99 	0.89 	0.83 	0.86 
+
+Entity level P/R/F1: 0.87/0.82/0.85
+
+\end{verbatim}
+
+    Viterbi decoding output:
+
+    \begin{verbatim}
+        Token-level confusion matrix:
+go\gu   	PER     	ORG     	LOC     	MISC    	O       
+PER     	2779.00 	54.00   	69.00   	22.00   	225.00  
+ORG     	109.00  	1615.00 	78.00   	43.00   	247.00  
+LOC     	41.00   	100.00  	1730.00 	27.00   	196.00  
+MISC    	39.00   	36.00   	25.00   	1009.00 	159.00  
+O       	53.00   	90.00   	42.00   	63.00   	42511.00
+
+Token-level scores:
+label	acc  	prec 	rec  	f1   
+PER  	0.99 	0.92 	0.88 	0.90 
+ORG  	0.99 	0.85 	0.77 	0.81 
+LOC  	0.99 	0.89 	0.83 	0.86 
+MISC 	0.99 	0.87 	0.80 	0.83 
+O    	0.98 	0.98 	0.99 	0.99 
+micro	0.99 	0.97 	0.97 	0.97 
+macro	0.99 	0.90 	0.85 	0.88 
+not-O	0.99 	0.89 	0.83 	0.86 
+
+Entity level P/R/F1: 0.87/0.83/0.85
+
+    \end{verbatim}
+
+    \item[(e)] 
 \end{itemize}
 
 \section*{5. BiLSTM Tagger}
